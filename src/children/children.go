@@ -3,11 +3,8 @@
 package children
 
 import (
-	"net/http"
-
-	"appengine"
-
 	"github.com/gorilla/mux"
+	"net/http"
 )
 
 func init() {
@@ -16,58 +13,16 @@ func init() {
 	router := mux.NewRouter()
 
 	// Child information
-	router.Path("/children/{id}").Methods("GET", "PUT", "DELETE").HandlerFunc(childHandler)
-	router.Path("/children").Methods("GET", "POST").HandlerFunc(childrenHandler)
+	router.Path("/children/{id}").Methods("GET", "PUT", "DELETE").HandlerFunc(ChildResource{}.SingleHandler)
+	router.Path("/children").Methods("GET", "POST").HandlerFunc(ChildResource{}.ListHandler)
 
 	// Adult information
-	router.Path("/adults/{id}").Methods("GET", "PUT", "DELETE").HandlerFunc(adultHandler)
-	router.Path("/adults").Methods("GET", "POST").HandlerFunc(adultsHandler)
+	router.Path("/adults/{id}").Methods("GET", "PUT", "DELETE").HandlerFunc(AdultResource{}.SingleHandler)
+	router.Path("/adults").Methods("GET", "POST").HandlerFunc(AdultResource{}.ListHandler)
 
 	// Security information
-	router.Path("/security/roles/{id}").Methods("GET", "PUT", "DELETE").HandlerFunc(roleHandler)
-	router.Path("/security/roles").Methods("GET", "POST").HandlerFunc(rolesHandler)
+	router.Path("/security/roles/{id}").Methods("GET", "PUT", "DELETE").HandlerFunc(RoleResource{}.SingleHandler)
+	router.Path("/security/roles").Methods("GET", "POST").HandlerFunc(RoleResource{}.ListHandler)
 
 	http.Handle("/", router)
-}
-
-func roleHandler(w http.ResponseWriter, r *http.Request) {
-	c := appengine.NewContext(r)
-	if !Authorize(c, w, r, "/security/roles") {
-		w.WriteHeader(http.StatusUnauthorized)
-	}
-}
-
-func rolesHandler(w http.ResponseWriter, r *http.Request) {
-	c := appengine.NewContext(r)
-	if !Authorize(c, w, r, "/security/roles") {
-		w.WriteHeader(http.StatusUnauthorized)
-	}
-}
-
-func adultHandler(w http.ResponseWriter, r *http.Request) {
-	c := appengine.NewContext(r)
-	if !Authorize(c, w, r, "/adults") {
-		w.WriteHeader(http.StatusUnauthorized)
-	}
-}
-
-func adultsHandler(w http.ResponseWriter, r *http.Request) {
-	c := appengine.NewContext(r)
-	if !Authorize(c, w, r, "/adults") {
-		w.WriteHeader(http.StatusUnauthorized)
-	}
-}
-
-func childHandler(w http.ResponseWriter, r *http.Request) {
-	c := appengine.NewContext(r)
-	if !Authorize(c, w, r, "/children") {
-		w.WriteHeader(http.StatusUnauthorized)
-	}
-}
-
-func childrenHandler(w http.ResponseWriter, r *http.Request) {
-	c := appengine.NewContext(r)
-	if !Authorize(c, w, r, "/children") {
-		w.WriteHeader(http.StatusUnauthorized)
-	}
 }
