@@ -7,14 +7,16 @@ handlers:
 - url: /stylesheets
   static_dir: stylesheets
 
-- url: /css
-  static_dir: css
-
 - url: /html
   static_dir: html
+  login: required
+  auth_fail_action: redirect
 
 - url: /images
   static_dir: images
+
+- url: /javascript
+  static_dir: javascript
 
 - url: /.*
   script: _go_app

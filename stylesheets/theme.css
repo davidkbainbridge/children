@@ -1,0 +1,172 @@
+body {
+    background-color: white;
+    margin: 0px;
+}
+div.search {
+    background-color: red;
+    color: white;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 20pt;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-bottom-color: black;
+}
+
+input[type="text"]
+{
+    font-size:24px;
+}
+
+input.family {
+    autocomplete: on;
+    size: 40;
+}
+
+button.create {
+    float: right;
+    font-size: 20px;
+}
+
+span.small-horizontal-space {
+    margin-left: 20px;
+}
+
+select.list {
+    list-style: none;
+    background-color: yellow;
+    width: 300px;
+    font-size: 20px;
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+span.label {
+    font-size: 20px;
+    font-family: Verdana, Geneva, sans-serif;
+    font-weight: bold;
+}
+
+div.label {
+    display: inline-block;
+    margin-left: 20px;
+    font-size: 20px;
+    font-family: Verdana, Geneva, sans-serif;
+    font-weight: bold;
+    margin-top: 10px;
+    height: 32px;
+}
+
+input.value {
+    display: inline-block;
+    margin-left: 20px;
+    font-size: 20px;
+    font-family: Verdana, Geneva, sans-serif;
+    font-weight: normal;
+    height: 32px;
+
+    background: white;
+    border: 1px double #DDD;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #333;
+    color: #666;
+    outline: none;
+}
+
+input.value:-webkit-input-placeholder {
+    color: red;
+    font-style: italic;
+}
+
+input.value-moz-placeholder {
+    color: red;
+    font-style: italic;
+}
+
+#givenname {
+    width: 250px;
+}
+
+#familyname {
+    width: 350px;
+}
+
+#birthdate {
+    width: 300px;
+}
+
+#age {
+    width: 75px;
+}
+
+#grade {
+    width: 150px;
+}
+
+#enteredhousing {
+    width: 300px;
+}
+
+#lefthousing {
+    width: 300px;
+}
+
+#yearshousing {
+    width: 75px;
+}
+
+#mother {
+    width: 500px;
+}
+
+#father {
+    width: 500px;
+}
+
+#siblings {
+    width: 500px;
+}
+
+#village {
+    width: 500px;
+}
+
+div.lgroup1 {
+    width: 200px;
+}
+
+div.lgroup2 {
+    width: 100px;
+}
+
+hr.separator {
+    height: 1px;
+    color: black;
+}
+
+#image {
+    width: 300px;
+    height: 300px;
+    vertical-align: text-top;
+    background-color: red;
+}
+
+#form {
+    display: inline-block;
+    /*background-color: blue;*/
+    margin-top: 7px;
+    margin-left: 7px;
+    margin-right: 7px;
+    margin-bottom: 7px;
+}
+
+#comments {
+    display: inline-block;
+    /*background-color: green;*/
+    margin-top: 7px;
+    margin-left: 7px;
+    margin-right: 7px;
+    margin-bottom: 7px;
+}

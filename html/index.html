@@ -1,0 +1,40 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/theme.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="/javascript/haiti.js"></script>
+    <title>Haiti - Children in Group Housing</title>
+</head>
+<body onload="haiti.loadAllChildren()">
+    <div class="search">
+        Child: <select NAME="list" class="list" onchange="haiti.viewChild(this.value)">
+        </select>
+        <button id="new" class="create" type="button" onclick="haiti.newRecord()">New</button>
+        <button id="save" class="create" type="button" onclick="haiti.saveRecord()">Save</button>
+        <button id="delete" class="create" type="button" onclick="haiti.deleteRecord()">Delete</button>
+    </div>
+    <div id="form">
+        <div style="float: left">
+            <img id="image" src="/images/person-placeholder.jpg" alt="Child Image"/>
+        </div>
+        <div style="float: left">
+            <div class="label">Name: </div><input type="text" id="givenname" class="value" placeholder="given name"></input><input type="text" id="familyname" class="value" placeholder="family name"></input></br>
+            <div class="label">Birthdate: </div><input type="date" id="birthdate" class="value"></input><div class="label">Age: </div><input type="number" min="0" max="30" id="age" class="value" readonly></input></br>
+            <div class="label">Grade in School: </div><input type="number" min="0" max="20" id="grade" class="value"></input></br>
+            </p>
+            <div class="label lgroup1">Entered Housing: </div><input type="date" id="enteredhousing" class="value"></input></br>
+            <div class="label lgroup1">Left Housing: </div><input type="date" id="lefthousing" class="value"></input></br>
+            <div class="label lgroup1">Years in Housing: </div><input id="yearshousing" class="value" readonly></input></br>
+            </p>
+            <div class="label lgroup2">Mother: </div><input type="text" id="mother" class="value"></input></br>
+            <div class="label lgroup2">Father: </div><input type="text" id="father" class="value"></input></br>
+            <div class="label lgroup2">Siblings: </div><input type="text" id="siblings" class="value"></input></br>
+            <div class="label lgroup2">Village: </div><input type="text" id="village" class="value"></input></br>
+        </div>
+    </div><br/>
+    <div id="comments">
+        <hr class="separator" style="width: 940px">
+        <div class="label" style="float: left">Comments</div>
+    </div>
+</body>
+</html>

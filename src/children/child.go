@@ -2,7 +2,6 @@ package children
 
 import (
 	"net/http"
-	"time"
 
 	"appengine"
 
@@ -14,9 +13,9 @@ type Child struct {
 	Id             string           `json:"id"`
 	FamilyName     string           `json:"familyname"`
 	GivenName      string           `json:"givenname"`
-	BirthDate      time.Time        `json:"birthday,omitempty"`
-	EnteredHousing time.Time        `json:"enteredhousing,omitempty"`
-	LeftHousing    time.Time        `json:"lefthousing,omitempty"`
+	BirthDate      string           `json:"birthdate,omitempty"`
+	EnteredHousing string           `json:"enteredhousing,omitempty"`
+	LeftHousing    string           `json:"lefthousing,omitempty"`
 	GradeInSchool  int              `json:"gradeinschool,omitempty"`
 	Mother         *datastore.Key   `json:"mother,omitempty"`
 	Father         *datastore.Key   `json:"father,omitempty"`
@@ -53,6 +52,7 @@ func (ChildResource) Validate(val interface{}) bool {
 	if child.FamilyName == "" || child.GivenName == "" {
 		return false
 	}
+
 	return true
 }
 

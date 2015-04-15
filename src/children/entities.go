@@ -31,6 +31,8 @@ type Resource interface {
 
 func Create(resource Resource, c appengine.Context, w http.ResponseWriter, r *http.Request) {
 
+	c.Infof("Have create request")
+
 	entityName := resource.Name()
 	entityPath := resource.Path()
 	child := resource.New()
@@ -38,11 +40,14 @@ func Create(resource Resource, c appengine.Context, w http.ResponseWriter, r *ht
 	defer r.Body.Close()
 	body, err := ioutil.ReadAll(r.Body)
 	if len(body) == 0 {
+		c.Errorf("No body in POST REQUEST")
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+	c.Infof("POST body: %s", body)
 	err = json.Unmarshal(body, &child)
 	if err != nil {
+		c.Errorf("Unable to unmarshal data into object: %s", err.Error())
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -65,21 +70,27 @@ func Create(resource Resource, c appengine.Context, w http.ResponseWriter, r *ht
 		http.Error(w, "Duplicate Entry", http.StatusBadRequest)
 		return
 	}
+	id := uuid.New();
+	resource.Id(child, id)
 	parent := datastore.NewKey(c, entityName, entityPath, 0, nil)
-	key := datastore.NewIncompleteKey(c, entityName, parent)
-	resource.Id(child, uuid.New())
+	// key := datastore.NewIncompleteKey(c, entityName, parent)
+	key := datastore.NewKey(c, entityName, id, 0, parent)
+	resource.Id(child, id)
 	_, err = datastore.Put(c, key, child)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
+	encode := json.NewEncoder(w)
+	encode.Encode(child)
+	w.WriteHeader(http.StatusOK)
 }
 
 func Query(resource Resource, c appengine.Context, w http.ResponseWriter, r *http.Request) {
 	// Be default the query will return the first 10 items found, but this can be modified by query parameters
 	limit := -1
 	offset := -1
+	keysOnly := false
 
 	entityName := resource.Name()
 
@@ -97,7 +108,8 @@ func Query(resource Resource, c appengine.Context, w http.ResponseWriter, r *htt
 		if len(nv) == 1 {
 			switch nv[0] {
 			case "keys":
-				query = query.KeysOnly()
+				query = query.KeysOnly();
+				keysOnly = true
 				break
 			case "count":
 				//includeCount = true
@@ -155,8 +167,18 @@ func Query(resource Resource, c appengine.Context, w http.ResponseWriter, r *htt
 		return
 	}
 	c.Infof("FOUND: %d", len(keys))
-	encode := json.NewEncoder(w)
-	encode.Encode(found)
+	if keysOnly {
+		ids := make([]string, len(keys))
+		for i := 0; i < len(keys); i += 1 {
+			c.Infof("KEY: %s -> %s", keys[i].String(), keys[i].StringID())
+			ids[i] = keys[i].StringID()
+		}
+		encode := json.NewEncoder(w)
+		encode.Encode(ids)
+	} else {
+		encode := json.NewEncoder(w)
+		encode.Encode(found)
+	}
 	w.WriteHeader(http.StatusOK)
 }
 
@@ -166,8 +188,9 @@ func Fetch(resource Resource, c appengine.Context, w http.ResponseWriter, r *htt
 
 	entityName := resource.Name()
 
-	query := datastore.NewQuery(entityName).Limit(1).Distinct()
+	query := datastore.NewQuery(entityName).Distinct()
 	query = resource.FilterById(query, id)
+	c.Infof("QUERY: %s", query)
 	found := resource.Make(1)
 	keys, err := query.GetAll(c, found)
 	if err != nil {
@@ -237,11 +260,13 @@ func Delete(resource Resource, c appengine.Context, w http.ResponseWriter, r *ht
 
 	query := datastore.NewQuery(entityName).Limit(1).Distinct().KeysOnly()
 	query = resource.FilterById(query, id)
+	c.Infof("QUERY %w", query)
 	keys, err := query.GetAll(c, nil)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	c.Infof("FOUND: %d", len(keys))
 	if len(keys) != 1 {
 		w.WriteHeader(http.StatusNotFound)
 		return
